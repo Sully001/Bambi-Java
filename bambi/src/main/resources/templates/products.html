@@ -8,8 +8,9 @@
         href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
-    <link rel="stylesheet" th:href="@{/css/custom.css}">
-    <script th:href="@{/js/script.js}"></script>
+    <link rel="stylesheet" th:href="@{/custom.css}">
+    <script type="text/javascript" th:href="@{/custom.js}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
   <div class="container">
@@ -21,17 +22,27 @@
         <a th:href="@{/products/new}" class="btn btn-primary">Add Product</a>
       </div>
     </div>
+    <!--search bar and search button -->
     <form action="/products" method="get">
       <label><input type="text" name="keyword" class="form-control" placeholder="Search..."></label>
       <button type="submit" class="btn btn-primary">Search</button>
     </form>
+
+    <!--Listener methods for sort method so no submit button is req -->
+    <script>
+      $(document).ready(function () {
+        $('#sort-select').change(function () {
+          $('#sort-form').submit();
+        });
+      });
+    </script>
+    <!-- Drop Down selection for sorting -->
       <form action="/products" method="get" id="sort-form">
-        <select name="sort" id="sort-select">
+        <select name="sort" id="sort-select" onsubmit="myFunc()">
           <option value="default">Default</option>
           <option value="asc">Price (Low to High)</option>
           <option value="desc">Price (High to Low)</option>
         </select>
-        <button type="submit" class="btn btn-primary">Sort</button>
       </form>
 
     <table class="table table-striped table-bordered">
