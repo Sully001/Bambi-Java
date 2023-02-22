@@ -28,7 +28,8 @@
       <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
-    <!--Listener methods for sort method so no submit button is req -->
+    <!--Listener methods for sort method so no submit button is req
+    this is temp here until moved to script.js -->
     <script>
       $(document).ready(function () {
         $('#sort-select').change(function () {
@@ -38,7 +39,7 @@
     </script>
     <!-- Drop Down selection for sorting -->
       <form action="/products" method="get" id="sort-form">
-        <select name="sort" id="sort-select" onsubmit="myFunc()">
+        <select name="sort" id="sort-select">
           <option value="default">Default</option>
           <option value="asc">Price (Low to High)</option>
           <option value="desc">Price (High to Low)</option>
