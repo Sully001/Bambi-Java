@@ -11,5 +11,6 @@ public interface ProductService {
     Product updateProduct(Product product);
     Product getProductById(Long id);
     void deleteProductById(Long id);
-
+    List<Product> getAllProductsSortedByPriceDesc(String keyword, String sort);
+    List<Product> getAllProductsSortedByPriceAsc(String keyword, String sort);
 }

@@ -30,8 +30,13 @@ public class ProductController {
 
     //GET request if no search all listed products shown, if search then only matched products shown
     @GetMapping("/products")
-    public String listAllProducts(Model model, @Param("keyword") String keyword) {
-        List<Product> products = productService.getAllProducts(keyword);
+    public String listAllProducts(Model model, @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort, @Param("keyword") String keyword) {
+        List<Product> products;
+        if(sort.equals("asc")){
+            products = productService.getAllProductsSortedByPriceAsc(keyword, sort);
+        }else{
+            products = productService.getAllProductsSortedByPriceDesc(keyword, sort);
+        }
         model.addAttribute("products", products);
         model.addAttribute("keyword", keyword);
         return "products";
@@ -118,7 +123,6 @@ public class ProductController {
         productService.deleteProductById(id);
         return "redirect:/products";
     }
-
 
     //Saves Image To Folder "./bambi-photos/"
     private void saveImageToFolder(MultipartFile image) throws IOException {

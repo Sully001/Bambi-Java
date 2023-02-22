@@ -22,6 +22,10 @@
       <input type="text" name="keyword"  class="form-control" placeholder="Search...">
       <button type="submit" class="btn btn-primary">Search</button>
     </form>
+    <form method="get" action="/products">
+      <button type="submit" name="sort" value="asc">Sort by Price (Low to High)</button>
+      <button type="submit" name="sort" value="desc">Sort by Price (High to Low)</button>
+    </form>
     <table class="table table-striped table-bordered">
       <thead class="table-dark">
         <tr>
