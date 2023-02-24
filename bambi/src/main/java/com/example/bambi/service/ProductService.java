@@ -1,16 +1,17 @@
 package com.example.bambi.service;
 
 import com.example.bambi.entity.Product;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface ProductService {
 
-    List<Product> getAllProducts(String keyword);
     Product saveProduct(Product product);
+
     Product updateProduct(Product product);
+
     Product getProductById(Long id);
+
     void deleteProductById(Long id);
-    List<Product> getAllProductsSortedByPriceDesc(String keyword, String sort);
-    List<Product> getAllProductsSortedByPriceAsc(String keyword, String sort);
+    Page<Product> findPaginated(int pageNo, int pageSize);
+
 }

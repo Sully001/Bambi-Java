@@ -29,20 +29,22 @@
     </form>
 
     <!--Listener methods for sort method so no submit button is req
-    this is temp here until moved to script.js -->
+    this is temp here until moved to script.js
     <script>
       $(document).ready(function () {
         $('#sort-select').change(function () {
           $('#sort-form').submit();
         });
       });
-    </script>
+    </script>-->
     <!-- Drop Down selection for sorting -->
       <form action="/products" method="get" id="sort-form">
         <select name="sort" id="sort-select">
-          <option value="default">Default</option>
+          <option value="default">---select---</option>
           <option value="asc">Price (Low to High)</option>
           <option value="desc">Price (High to Low)</option>
+          <option>Alphabetical Ascending (brand)</option>
+          <option>Alphabetical Descending (brand)</option>
         </select>
       </form>
 
@@ -54,20 +56,20 @@
           <th>Product Price</th>
           <th>Product Gender</th>
           <th>Product Category</th>
-          <th>Product Description</th>
+          <!--<th>Product Description</th>-->
           <th>Product Image</th>
           <th>Actions</th>
         </tr>
       </thead>
 
       <tbody>
-      <tr th:each="product: ${products}">
+      <tr th:each="product: ${listProducts}">
         <td th:text="${product.productBrand}"></td>
         <td th:text="${product.productName}"></td>
         <td th:text="${product.productPrice}"></td>
         <td th:text="${product.productGender}"></td>
         <td th:text="${product.productCategory}"></td>
-        <td th:text="${product.productDescription}"></td>
+       <!-- <td th:text="${product.productDescription}"></td> -->
         <td th:text="${product.productImage}"></td>
         <td>
           <a th:href="@{/product/edit/{id}(id=${product.id})}" class="btn btn-primary">
@@ -80,6 +82,32 @@
       </tr>
       </tbody>
     </table>
+    <div th:if = "${totalPages > 1}">
+      <div class="row col-sm-10 justify-content-between d-flex">
+        <div class="col-sm-2">
+          Total Rows: [[${totalItems}]]
+        </div>
+        <div>
+         <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+            <a th:if="${currentPage != i}" th:href="@{'/products/'+ ${i}}">[[${i}]]</a>
+            <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
+          </span>
+        </div>
+        <div>
+          <a th:if="${currentPage < totalPages}" th:href="@{'/products/' + ${currentPage + 1}}">Next</a>
+          <span th:unless="${currentPage < totalPages}">Next</span>
+        </div>
+        <div>
+          <a th:if="${currentPage > 1 }" th:href="@{'/products/' + ${currentPage - 1}}">Previous</a>
+          <span th:unless="${currentPage > 1 }">Previous</span>
+        </div>
+        <!-- An option to have a LAST button not req for now -->
+        <div>
+        <a th:if="${currentPage < totalPages}" th:href="@{'/products/' + ${totalPages}}">Last</a>
+          <span th:unless="${currentPage < totalPages}">Last</span>
+        </div>
+      </div>
+    </div>
 
   </div>
 </body>

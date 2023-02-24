@@ -2,7 +2,7 @@ package com.example.bambi.controller;
 
 import com.example.bambi.entity.Product;
 import com.example.bambi.service.ProductService;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,19 +29,24 @@ public class ProductController {
     }
 
     //GET request if no search all listed products shown, if search then only matched products shown
-    @GetMapping("/products")
-    public String listAllProducts(Model model, @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort, @Param("keyword") String keyword) {
-        List<Product> products;
-        if(sort.equals("asc")){
-            products = productService.getAllProductsSortedByPriceAsc(keyword, sort);
-        }else{
-            products = productService.getAllProductsSortedByPriceDesc(keyword, sort);
-        }
-        model.addAttribute("products", products);
-        model.addAttribute("keyword", keyword);
+    @GetMapping("/")
+    public String listAllProducts(Model model) {
+
+        return findPaginated(1,model);
+    }
+    //Handles pagination
+    @GetMapping("/products/{pageNo}")
+    public String findPaginated(@PathVariable(value = "pageNo") int pageNo, Model model) {
+        int pageSize = 5;
+        Page<Product> page = productService.findPaginated(pageNo, pageSize);
+        List<Product> listProducts = page.getContent();
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("listProducts", listProducts);
         return "products";
     }
-
     //GET request to retrieve the Add Product Form
     @GetMapping("/products/new")
     public String addProductForm() {
@@ -124,6 +129,7 @@ public class ProductController {
         return "redirect:/products";
     }
 
+
     //Saves Image To Folder "./bambi-photos/"
     private void saveImageToFolder(MultipartFile image) throws IOException {
         String filename = image.getOriginalFilename();
@@ -153,4 +159,5 @@ public class ProductController {
             image.delete();
         }
     }
+
 }
