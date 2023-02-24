@@ -31,19 +31,25 @@ public class ProductController {
     //GET request if no search all listed products shown, if search then only matched products shown
     @GetMapping("/")
     public String listAllProducts(Model model) {
-
-        return findPaginated(1,model);
+        // Default: the home page will be sorted by product name asc.
+        return findPaginated(1, "productName", "asc", model);
     }
     //Handles pagination
     @GetMapping("/products/{pageNo}")
-    public String findPaginated(@PathVariable(value = "pageNo") int pageNo, Model model) {
+    public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
+                                @RequestParam("sortField") String sortField,
+                                @RequestParam("sortDir") String sortDir,
+                                Model model) {
         int pageSize = 5;
-        Page<Product> page = productService.findPaginated(pageNo, pageSize);
+        Page<Product> page = productService.findPaginated(pageNo, pageSize, sortField, sortDir);
         List<Product> listProducts = page.getContent();
 
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
         model.addAttribute("listProducts", listProducts);
         return "products";
     }
