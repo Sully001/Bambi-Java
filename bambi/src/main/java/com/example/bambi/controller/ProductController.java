@@ -2,7 +2,7 @@ package com.example.bambi.controller;
 
 import com.example.bambi.entity.Product;
 import com.example.bambi.service.ProductService;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -29,14 +29,31 @@ public class ProductController {
     }
 
     //GET request if no search all listed products shown, if search then only matched products shown
-    @GetMapping("/products")
-    public String listAllProducts(Model model, @Param("keyword") String keyword) {
-        List<Product> products = productService.getAllProducts(keyword);
-        model.addAttribute("products", products);
-        model.addAttribute("keyword", keyword);
+    @GetMapping("/")
+    public String listAllProducts(Model model) {
+        // Default: the home page will be sorted by product name asc.
+
+        return findPaginated(1, "productName", "asc", model);
+    }
+    //Handles pagination
+    @GetMapping("/products/{pageNo}")
+    public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
+                                @RequestParam("sortField") String sortField,
+                                @RequestParam(value = "sortDir") String sortDir,
+                                Model model) {
+        int pageSize = 5;
+        Page<Product> page = productService.findPaginated(pageNo, pageSize, sortField, sortDir);
+        List<Product> listProducts = page.getContent();
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        model.addAttribute("listProducts", listProducts);
         return "products";
     }
-
     //GET request to retrieve the Add Product Form
     @GetMapping("/products/new")
     public String addProductForm() {
@@ -149,4 +166,5 @@ public class ProductController {
             image.delete();
         }
     }
+
 }

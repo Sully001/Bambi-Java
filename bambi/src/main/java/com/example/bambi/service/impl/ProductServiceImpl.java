@@ -3,25 +3,21 @@ package com.example.bambi.service.impl;
 import com.example.bambi.entity.Product;
 import com.example.bambi.repository.ProductRepository;
 import com.example.bambi.service.ProductService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     public ProductServiceImpl(ProductRepository productRepository) {
         super();
         this.productRepository = productRepository;
-    }
-
-    @Override
-    public List<Product> getAllProducts(String keyword) {
-        if(keyword != null){
-            return productRepository.search(keyword);
-        }
-            return productRepository.findAll();
     }
 
     @Override
@@ -44,4 +40,19 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(id);
     }
 
+    @Override
+    public Page<Product> findPaginated(int pageNo, int pageSize, String sortField, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
+                ? Sort.by(sortField).ascending() :
+                Sort.by(sortField).descending();
+
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
+        return this.productRepository.findAll(pageable);
     }
+ /* search method to be done
+    @Override
+    public List<Product> findByKeyword(String keyword) {  return productRepository.findByKeyword(keyword);
+    }
+  */
+
+}
