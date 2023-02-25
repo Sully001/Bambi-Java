@@ -32,6 +32,7 @@ public class ProductController {
     @GetMapping("/")
     public String listAllProducts(Model model) {
         // Default: the home page will be sorted by product name asc.
+
         return findPaginated(1, "productName", "asc", model);
     }
     //Handles pagination

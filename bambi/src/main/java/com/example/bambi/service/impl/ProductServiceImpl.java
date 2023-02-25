@@ -49,10 +49,10 @@ public class ProductServiceImpl implements ProductService {
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
         return this.productRepository.findAll(pageable);
     }
-    //FOR SEARCHBAR FUNCTION
-    /*@Override
-    public List<Product> search(String keyword) {  return productRepository.search(keyword);
-    }*/
-
+ /* search method to be done
+    @Override
+    public List<Product> findByKeyword(String keyword) {  return productRepository.findByKeyword(keyword);
+    }
+  */
 
 }

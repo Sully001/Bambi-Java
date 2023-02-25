@@ -13,6 +13,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>, PagingA
    @Query("SELECT products FROM Product products WHERE products.productName LIKE %?1% " +
            "or products.productBrand LIKE %?1% or CAST(products.productPrice as string) LIKE %?1% or " +
           "products.productGender LIKE %?1% or products.productCategory LIKE %?1%")
-    List<Product> search(String keyword);
+    List<Product> findByKeyword(String keyword);
 
 }
