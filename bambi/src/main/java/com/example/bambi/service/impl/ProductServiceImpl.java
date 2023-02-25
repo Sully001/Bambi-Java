@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
@@ -39,13 +41,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> findPaginated(int pageNo, int pageSize, String sortField, String sortDirection) {
-        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name())
+    public Page<Product> findPaginated(int pageNo, int pageSize, String sortField, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
                 ? Sort.by(sortField).ascending() :
                 Sort.by(sortField).descending();
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
         return this.productRepository.findAll(pageable);
     }
+    //FOR SEARCHBAR FUNCTION
+    /*@Override
+    public List<Product> search(String keyword) {  return productRepository.search(keyword);
+    }*/
+
 
 }

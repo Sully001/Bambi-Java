@@ -38,7 +38,7 @@ public class ProductController {
     @GetMapping("/products/{pageNo}")
     public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
                                 @RequestParam("sortField") String sortField,
-                                @RequestParam("sortDir") String sortDir,
+                                @RequestParam(value = "sortDir") String sortDir,
                                 Model model) {
         int pageSize = 5;
         Page<Product> page = productService.findPaginated(pageNo, pageSize, sortField, sortDir);
