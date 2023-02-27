@@ -82,7 +82,7 @@ public class ProductController {
 
         productService.saveProduct(product);
         saveImageToFolder(image);
-        return "redirect:/products";
+        return "redirect:/";
 
     }
 
@@ -125,7 +125,7 @@ public class ProductController {
         }
 
         productService.updateProduct(product);
-        return "redirect:/products";
+        return "redirect:/";
     }
 
     @GetMapping("/product/delete/{id}")
@@ -133,7 +133,7 @@ public class ProductController {
         Product product = productService.getProductById(id);
         deleteImage(product.getProductImage());
         productService.deleteProductById(id);
-        return "redirect:/products";
+        return "redirect:/";
     }
 
 
