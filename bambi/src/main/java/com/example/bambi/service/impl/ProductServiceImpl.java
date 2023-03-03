@@ -41,18 +41,21 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<Product> findPaginated(int pageNo, int pageSize, String sortField, String sortDir) {
+    public Page<Product> findPaginated(String keyword, int pageNo, int pageSize, String sortField, String sortDir) {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name())
                 ? Sort.by(sortField).ascending() :
                 Sort.by(sortField).descending();
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
-        return this.productRepository.findAll(pageable);
+        if (keyword != null && !keyword.isEmpty()) {
+            return productRepository.findByKeyword(keyword, pageable);
+        } else {
+            return productRepository.findAll(pageable);
+        }
     }
- /* search method to be done
+
     @Override
-    public List<Product> findByKeyword(String keyword) {  return productRepository.findByKeyword(keyword);
+    public Page<Product> findByKeyword(String keyword, Pageable pageable) {  return productRepository.findByKeyword(keyword, pageable);
     }
-  */
 
 }

@@ -30,19 +30,20 @@ public class ProductController {
 
     //GET request if no search all listed products shown, if search then only matched products shown
     @GetMapping("/")
-    public String listAllProducts(Model model) {
+    public String listAllProducts(String keyword, Model model) {
         // Default: the home page will be sorted by product name asc.
 
-        return findPaginated(1, "productName", "asc", model);
+        return findPaginated(keyword,1, "productName", "asc", model);
     }
     //Handles pagination
     @GetMapping("/products/{pageNo}")
-    public String findPaginated(@PathVariable(value = "pageNo") int pageNo,
+    public String findPaginated(@RequestParam(name = "keyword", defaultValue = "") String keyword,
+                                @PathVariable(value = "pageNo") int pageNo,
                                 @RequestParam("sortField") String sortField,
                                 @RequestParam(value = "sortDir") String sortDir,
                                 Model model) {
         int pageSize = 5;
-        Page<Product> page = productService.findPaginated(pageNo, pageSize, sortField, sortDir);
+        Page<Product> page = productService.findPaginated(keyword, pageNo, pageSize, sortField, sortDir);
         List<Product> listProducts = page.getContent();
 
         model.addAttribute("currentPage", pageNo);
@@ -52,6 +53,7 @@ public class ProductController {
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
         model.addAttribute("listProducts", listProducts);
+        model.addAttribute("keyword", keyword);
         return "products";
     }
     //GET request to retrieve the Add Product Form
