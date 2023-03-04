@@ -107,16 +107,16 @@
       </div>
       <div>
          <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-            <a th:if="${currentPage != i}" th:href="@{'/products/'+ ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} }">[[${i}]]</a>
+            <a th:if="${currentPage != i}" th:href="@{'/products/'+ ${i} + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir} + '&keyword=' + ${keyword}}">[[${i}]]</a>
             <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
           </span>
       </div>
       <div>
-        <a th:if="${currentPage < totalPages}" th:href="@{'/products/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+        <a th:if="${currentPage < totalPages}" th:href="@{'/products/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+ '&keyword=' + ${keyword}}">Next</a>
         <span th:unless="${currentPage < totalPages}">Next</span>
       </div>
       <div>
-        <a th:if="${currentPage > 1 }" th:href="@{'/products/' + ${currentPage - 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Previous</a>
+        <a th:if="${currentPage > 1 }" th:href="@{'/products/' + ${currentPage - 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}+ '&keyword=' + ${keyword}}">Previous</a>
         <span th:unless="${currentPage > 1 }">Previous</span>
       </div>
       <!-- An option to have a LAST button not req for now
