@@ -2,8 +2,7 @@ package com.example.bambi.service;
 
 import com.example.bambi.entity.Product;
 import org.springframework.data.domain.Page;
-
-import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 public interface ProductService {
 
@@ -15,10 +14,9 @@ public interface ProductService {
 
     void deleteProductById(Long id);
 
-    Page<Product> findPaginated(int pageNo, int pageSize, String sortField, String sortDir);
+    Page<Product> findPaginated(String keyword, int pageNo, int pageSize, String sortField, String sortDir);
 
-    /* search method to be done
-    List<Product> findByKeyword(String keyword);
-     */
+    Page<Product> findByKeyword(String keyword, Pageable pageable);
+
 
 }
